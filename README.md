@@ -1,13 +1,14 @@
 # Cryptography---19CS412-classical-techqniques
 # Caeser Cipher
 Caeser Cipher using with different key values
+
 ### NAME: KEERTHANA V
 ### REG NO: 212223220045
 ### DATE: 18.03.2025
 
 # AIM:
 
-To encrypt and decrypt the given message by using Ceaser Cipher encryption algorithm.
+To encrypt and decrypt the given message by using Caeser Cipher encryption algorithm.
 
 
 ## DESIGN STEPS:
@@ -18,7 +19,7 @@ Design of Caeser Cipher algorithnm
 
 ### Step 2:
 
-Implementation using C or python code
+Implementation using C code
 
 ### Step 3:
 
@@ -38,32 +39,28 @@ Implementation using C or python code
 #include <string.h>
 #include <ctype.h>
 void main()
-
 {
     char plain[10],cipher[10];
     int key,i,length;
     int result;
-    printf("\n Enter the plain text: ");
+    printf("\n ENTER THE PLAIN TEXT: ");
     scanf("%s", plain);
-    printf("\n Enter the key value: ");
+    printf("\n ENTER THE KEY VALUE: ");
     scanf("%d", &key);
-    printf("\n \n \t PLAIN TEXt: %s", plain);
+    printf("\n \n \t PLAIN TEXT: %s", plain);
     printf("\n \n \t ENCRYPTED TEXT: ");
     for(i=0, length = strlen(plain); i<length; i++)
     {
-        
         cipher[i]=plain[i] + key;
         if (isupper(plain[i]) && (cipher[i] > 'Z'))
         cipher[i] = cipher[i] - 26;
         if (islower(plain[i]) && (cipher[i] > 'z'))
         cipher[i] = cipher[i] - 26;
         printf("%c", cipher[i]);
-
     }
     printf("\n \n \t AFTER DECRYPTION : ");
     for(i=0;i<length;i++)
-    {
-        
+    {  
         plain[i]=cipher[i]-key;
         if(isupper(cipher[i])&&(plain[i]<'A'))
         plain[i]=plain[i]+26;
@@ -71,15 +68,13 @@ void main()
         plain[i]=plain[i]+26;
         printf("%c",plain[i]);
     }
-    getchar();
-
-    
+    getchar(); 
 }
 ```
 
-
 ## OUTPUT:
-<img width="244" alt="image" src="https://github.com/user-attachments/assets/050aef53-953d-4aa8-b2df-441c0bed4968" />
+<img width="229" alt="image" src="https://github.com/user-attachments/assets/1fd5c209-586a-47a8-b6bd-f3af991bfbcc" />
+
 
 
 ## RESULT:
