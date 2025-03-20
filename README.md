@@ -91,7 +91,7 @@ To implement a program to encrypt a plain text and decrypt a cipher text using p
 
 ### NAME: KEERTHANA V
 ### REG NO: 212223220045
-### DATE: 18.03.2025
+### DATE: 20.03.2025
  
 ## DESIGN STEPS:
 
@@ -101,7 +101,7 @@ Design of PlayFair Cipher algorithnm
 
 ### Step 2:
 
-Implementation using C or pyhton code
+Implementation using C code
 
 ### Step 3:
 
@@ -124,54 +124,151 @@ To decrypt, use the INVERSE (opposite) of the last 3 rules, and the 1st as-is (d
 
 ## PROGRAM:
 ```
-#include<stdio.h>
-#include<string.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#define MX 5
+
+void encryptPair(char ch1, char ch2, char key[MX][MX])
+{
+    int i, j, row1 = -1, col1 = -1, row2 = -1, col2 = -1;
+    for (i = 0; i < MX; i++)
+    {
+        for (j = 0; j < MX; j++)
+        {
+            if (key[i][j] == ch1)
+            {
+                row1 = i;
+                col1 = j;
+            }
+            else if (key[i][j] == ch2)
+            {
+                row2 = i;
+                col2 = j;
+            }
+        }
+    }
+    if (row1 == row2)
+        printf("%c%c", key[row1][(col1 + 1) % 5], key[row2][(col2 + 1) % 5]);
+    else if (col1 == col2)
+        printf("%c%c", key[(row1 + 1) % 5][col1], key[(row2 + 1) % 5][col2]);
+    else
+        printf("%c%c", key[row1][col2], key[row2][col1]);
+}
+
+void decryptPair(char ch1, char ch2, char key[MX][MX])
+{
+    int i, j, row1 = -1, col1 = -1, row2 = -1, col2 = -1;
+    for (i = 0; i < MX; i++)
+    {
+        for (j = 0; j < MX; j++)
+        {
+            if (key[i][j] == ch1)
+            {
+                row1 = i;
+                col1 = j;
+            }
+            else if (key[i][j] == ch2)
+            {
+                row2 = i;
+                col2 = j;
+            }
+        }
+    }
+    if (row1 == row2)
+        printf("%c%c", key[row1][(col1 + 4) % 5], key[row2][(col2 + 4) % 5]);
+    else if (col1 == col2)
+        printf("%c%c", key[(row1 + 4) % 5][col1], key[(row2 + 4) % 5][col2]);
+    else
+        printf("%c%c", key[row1][col2], key[row2][col1]);
+}
+
 int main()
 {
-    unsigned int a[3][3]={{6,24,1},{13,16,10},{20,17,15}};
-    unsigned int b[3][3]={{8,5,10},{21,8,21},{21,12,8}};
-    int i,j, t=0;
-    unsigned int c[20],d[20];
-    char msg[20];
-    printf("Enter plain text: ");
-    scanf("%s",msg);
-    for(i=0;i<strlen(msg);i++)
+    int i, j, k = 0, m = 0;
+    char key[MX][MX], keyminus[25], keystr[25], plaintext[100];
+    char alpha[26] = "ABCDEFGHIKLMNOPQRSTUVWXYZ";
+
+    printf("SIMULATING PLAYFAIR CIPHER\n");
+    printf("KEY TEXT: ");
+    fgets(keystr, sizeof(keystr), stdin);
+    keystr[strcspn(keystr, "\n")] = 0;
+
+    printf("PLAIN TEXT: ");
+    fgets(plaintext, sizeof(plaintext), stdin);
+    plaintext[strcspn(plaintext, "\n")] = 0;
+
+    for (i = 0; i < strlen(keystr); i++)
     {
-        c[i]=msg[i]-65;
-        printf("%d ",c[i]);
+        if (tolower(keystr[i]) == 'j')
+            keystr[i] = 'I';
+        keystr[i] = toupper(keystr[i]);
     }
-    for(i=0;i<3;i++)
+
+    for (i = 0; i < strlen(plaintext); i++)
     {
-        t=0;
-        for(j=0;j<3;j++)
+        if (tolower(plaintext[i]) == 'j')
+            plaintext[i] = 'I';
+        plaintext[i] = toupper(plaintext[i]);
+    }
+
+    int n = strlen(keystr), found;
+    for (i = 0; i < 25; i++)
+    {
+        found = 0;
+        for (j = 0; j < n; j++)
         {
-            t=t+(a[i][j]*c[j]);
+            if (keystr[j] == alpha[i])
+            {
+                found = 1;
+                break;
+            }
         }
-        d[i]=t%26;
+        if (!found)
+            keyminus[m++] = alpha[i];
     }
-    printf("\nEncrypted Cipher Text: ");
-    for(i=0;i<3;i++)
-    printf(" %c",d[i]+65);
-    for(i=0;i<3;i++)
+
+    k = 0;
+    m = 0;
+    for (i = 0; i < MX; i++)
     {
-        t=0;
-        for(j=0;j<3;j++)
+        for (j = 0; j < MX; j++)
         {
-            t=t+(b[i][j]*d[j]);
+            if (k < n)
+                key[i][j] = keystr[k++];
+            else
+                key[i][j] = keyminus[m++];
         }
-        c[i]=t%26;
     }
-    printf("\nDecrypted Cipher Text: ");
-    for(i=0;i<3;i++)
-    printf(" %c",c[i]+65);
-    getchar();
+
+    printf("CIPHER TEXT: ");
+    for (i = 0; i < strlen(plaintext); i++)
+    {
+        if (plaintext[i + 1] == '\0')
+        {
+            encryptPair(plaintext[i], 'X', key);
+        }
+        else if (plaintext[i] == plaintext[i + 1])
+        {
+            encryptPair(plaintext[i], 'X', key);
+        }
+        else
+        {
+            encryptPair(plaintext[i], plaintext[i + 1], key);
+            i++;
+        }
+    }
+
+    printf("\nDECRYPTED TEXT: %s\n", plaintext);
     return 0;
 }
+
+
 ```
 
 ## OUTPUT:
-Output:
-Key text: Monarchy Plain text: instruments Cipher text: gatlmzclrqtx
+<img width="188" alt="image" src="https://github.com/user-attachments/assets/21c413a3-09d6-4305-bef8-997917a39eef" />
+
 
 ## RESULT:
 The program is executed successfully
