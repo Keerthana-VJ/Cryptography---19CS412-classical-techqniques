@@ -85,7 +85,7 @@ The program is executed successfully
 # PlayFair Cipher
 Playfair Cipher using with different key values
 
-# AIM:
+## AIM:
 
 To implement a program to encrypt a plain text and decrypt a cipher text using play fair Cipher substitution technique.
 
