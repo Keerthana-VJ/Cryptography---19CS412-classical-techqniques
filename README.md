@@ -306,53 +306,92 @@ The cipher can, be adapted to an alphabet with any number of letters. All arithm
 
 ## PROGRAM:
 ```
-#include<stdio.h>
-#include<string.h>
-int main()
-{
-    unsigned int a[3][3]={{6,24,1},{13,16,10},{20,17,15}};
-    unsigned int b[3][3]={{8,5,10},{21,8,21},{21,12,8}};
-    int i,j, t=0;
-    unsigned int c[20],d[20];
-    char msg[20];
-    printf("ENTER PLAIN TEXT: ");
-    scanf("%s",msg);
-    for(i=0;i<strlen(msg);i++)
-    {
-        c[i]=msg[i]-65;
-        printf("%d ",c[i]);
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define SIZE 2  // Size of the key matrix (2x2 for simplicity)
+
+int keyMatrix[SIZE][SIZE];
+
+void toUpperCase(char *str) {
+    for (int i = 0; str[i]; i++) {
+        str[i] = toupper(str[i]);
     }
-    for(i=0;i<3;i++)
-    {
-        t=0;
-        for(j=0;j<3;j++)
-        {
-            t=t+(a[i][j]*c[j]);
+}
+
+void removeSpaces(char *str) {
+    int count = 0;
+    for (int i = 0; str[i]; i++) {
+        if (str[i] != ' ') {
+            str[count++] = str[i];
         }
-        d[i]=t%26;
     }
-    printf("\nENCRYPTED CIPHER TEXT: ");
-    for(i=0;i<3;i++)
-    printf(" %c",d[i]+65);
-    for(i=0;i<3;i++)
-    {
-        t=0;
-        for(j=0;j<3;j++)
-        {
-            t=t+(b[i][j]*d[j]);
+    str[count] = '\0';
+}
+
+void getKeyMatrix(char *key) {
+    int k = 0;
+    toUpperCase(key);
+    removeSpaces(key);
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            keyMatrix[i][j] = key[k++] - 'A';
         }
-        c[i]=t%26;
     }
-    printf("\nDECRYPTED CIPHER TEXT: ");
-    for(i=0;i<3;i++)
-    printf(" %c",c[i]+65);
-    getchar();
+}
+
+void encrypt(char *text, char *cipher) {
+    toUpperCase(text);
+    removeSpaces(text);
+    int len = strlen(text);
+    if (len % SIZE != 0) {
+        text[len++] = 'X';  // Padding if needed
+        text[len] = '\0';
+    }
+    
+    for (int i = 0; i < len; i += SIZE) {
+        for (int row = 0; row < SIZE; row++) {
+            int sum = 0;
+            for (int col = 0; col < SIZE; col++) {
+                sum += keyMatrix[row][col] * (text[i + col] - 'A');
+            }
+            cipher[i + row] = (sum % 26) + 'A';
+        }
+    }
+    cipher[len] = '\0';
+}
+
+void printKeyMatrix() {
+    printf("KEY MATRIX:\n");
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            printf("%d ", keyMatrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    char key[SIZE * SIZE + 1], text[100], cipher[100];
+    
+    printf("ENTER KEY (4 letters): ");
+    scanf("%s", key);
+    getKeyMatrix(key);
+    printKeyMatrix();
+    
+    printf("ENTER PLAINTEXT: ");
+    scanf("%s", text);
+    
+    encrypt(text, cipher);
+    printf("CIPHERTEXT: %s\n", cipher);
+    
     return 0;
 }
 ```
 
 ## OUTPUT:
-<img width="385" alt="image" src="https://github.com/user-attachments/assets/390aa573-c671-45b0-85db-8db2bb2e9f94" />
+<img width="323" alt="image" src="https://github.com/user-attachments/assets/dbfbec98-d682-47a0-8d4a-c921cccd3f78" />
 
 
 ## RESULT:
@@ -362,6 +401,9 @@ The program is executed successfully
 
 # Vigenere Cipher
 Vigenere Cipher using with different key values
+### NAME: KEERTHANA
+### REG NO: 212223220045
+### DATE:
 
 # AIM:
 
@@ -386,45 +428,91 @@ The Vigenere cipher is a method of encrypting alphabetic text by using a series 
 
 
 ## PROGRAM:
-PROGRAM:
-#include<stdio.h> #include<string.h>
-//FunctiontoperformVigenereencryption voidvigenereEncrypt(char*text,constchar*key){ inttextLen= strlen(text);
-intkeyLen=strlen(key); for(inti =0;i< textLen;i++){ charc =text[i]; if(c>='A'&&c<='Z'){
-//Encryptuppercaseletters
-text[i]=((c-'A'+key[i%keyLen]-'A')%26)+'A';
-}else if(c>='a'&&c<='z'){
-//Encryptlowercaseletters
-text[i]=((c-'a'+key[i%keyLen]-'A')%26)+'a';
-}
-}
-}
-//FunctiontoperformVigeneredecryption voidvigenereDecrypt(char*text,constchar*key){ inttextLen= strlen(text);
-intkeyLen=strlen(key);
+```
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
 
-for(inti =0;i< textLen;i++){ charc =text[i]; if(c>='A'&&c<='Z'){
-//Decryptuppercaseletters
- 
-text[i]=((c-'A'-(key[i% keyLen]-'A') +26) %26)+ 'A';
-}else if(c>='a'&&c<='z'){
-//Decryptlowercaseletters
-text[i]=((c-'a'-(key[i% keyLen]-'A') +26) %26)+ 'a';
+void encipher();
+void decipher();
+
+int main() {
+    int choice;
+    while (1) {
+        printf("\n1. ENCRYPT TEXT");
+        printf("\t2. DECRYPED TEXT");
+        printf("\t3. EXIT");
+        printf("\n\nENTER YOUR CHOICE: ");
+        scanf("%d", &choice);
+        getchar(); // Consume newline character after scanf
+        
+        if (choice == 3)
+        { 
+            printf("\nEXIT\n");
+            return 0;
+        }
+        else if (choice == 1)
+            encipher();
+        else if (choice == 2)
+            decipher();
+        else
+            printf("PLEASE ENTER A VALID OPTION.\n");
+    }
 }
+
+void encipher() {
+    unsigned int i, j;
+    char input[50], key[10];
+    printf("\nENCRYPTION\n");
+
+    printf("\nENTER PLAIN TEXT: ");
+    scanf("%49s", input); // Prevent buffer overflow
+
+    printf("\nENTER KEY VALUE: ");
+    scanf("%9s", key); // Prevent buffer overflow
+
+    printf("\nRESULTANT CIPHER TEXT: ");
+    for (i = 0, j = 0; i < strlen(input); i++, j++) {
+        if (j >= strlen(key)) {
+            j = 0; // Reset key index if it exceeds the key length
+        }
+        printf("%c", 65 + (((toupper(input[i]) - 65) + (toupper(key[j]) - 65)) % 26)); // Encryption formula
+    }
+    printf("\n"); // New line after output
 }
+
+void decipher() {
+    unsigned int i, j;
+    char input[50], key[10];
+    int value;
+    printf("\nDECRYPTION\n");
+
+    printf("\nENTER CIPHER TEXT: ");
+    scanf("%49s", input); // Prevent buffer overflow
+
+    printf("\nENTER THE KEY VALUE: ");
+    scanf("%9s", key); // Prevent buffer overflow
+
+    printf("\nDECRYPTED PLAIN TEXT: ");
+    for (i = 0, j = 0; i < strlen(input); i++, j++) {
+        if (j >= strlen(key)) {
+            j = 0; // Reset key index if it exceeds the key length
+        }
+        // Decryption formula
+        value = (toupper(input[i]) - 65) - (toupper(key[j]) - 65);
+        if (value < 0) {
+            value += 26; // Correct the negative wrap-around in the alphabet
+        }
+        printf("%c", 65 + (value % 26));
+    }
+    printf("\n"); // New line after output
 }
-intmain(){
-constchar *key="KEY";//Replacewithyourdesired key
-char message[]= "Thisisasecretmessage.";//Replace withyourmessage
-//Encrypt themessage vigenereEncrypt(message,key); printf("EncryptedMessage:%s\n",message);
-//Decrypt themessage backtotheoriginal vigenereDecrypt(message,key); printf("DecryptedMessage:%s\n",message); Return 0;
+```
 
 ## OUTPUT:
-OUTPUT :
+<img width="220" alt="image" src="https://github.com/user-attachments/assets/60a3d730-4968-4a2d-abb3-d5bc113c7ea4" />
 
-Simulating Vigenere Cipher
-
-
-Input Message : SecurityLaboratory
-Encrypted Message : NMIYEMKCNIQVVROWXC Decrypted Message : SECURITYLABORATORY
 ## RESULT:
 The program is executed successfully
 
