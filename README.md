@@ -315,7 +315,7 @@ int main()
     int i,j, t=0;
     unsigned int c[20],d[20];
     char msg[20];
-    printf("Enter plain text: ");
+    printf("ENTER PLAIN TEXT: ");
     scanf("%s",msg);
     for(i=0;i<strlen(msg);i++)
     {
@@ -331,7 +331,7 @@ int main()
         }
         d[i]=t%26;
     }
-    printf("\nEncrypted Cipher Text: ");
+    printf("\nENCRYPTED CIPHER TEXT: ");
     for(i=0;i<3;i++)
     printf(" %c",d[i]+65);
     for(i=0;i<3;i++)
@@ -343,7 +343,7 @@ int main()
         }
         c[i]=t%26;
     }
-    printf("\nDecrypted Cipher Text: ");
+    printf("\nDECRYPTED CIPHER TEXT: ");
     for(i=0;i<3;i++)
     printf(" %c",c[i]+65);
     getchar();
@@ -352,7 +352,8 @@ int main()
 ```
 
 ## OUTPUT:
-<img width="212" alt="image" src="https://github.com/user-attachments/assets/89fc7973-0b87-4c0b-8097-4371454bcc36" />
+<img width="385" alt="image" src="https://github.com/user-attachments/assets/390aa573-c671-45b0-85db-8db2bb2e9f94" />
+
 
 ## RESULT:
 The program is executed successfully
