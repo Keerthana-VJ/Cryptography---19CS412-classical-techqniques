@@ -281,7 +281,7 @@ Hill Cipher using with different key values
 ### NAME: KEERTHANA V
 ### REG NO: 212223220045
 ### DATE: 27.03.2025
-# AIM:
+## AIM:
 
 To develop a simple C program to implement Hill Cipher.
 
