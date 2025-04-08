@@ -514,7 +514,7 @@ void decipher() {
 <img width="220" alt="image" src="https://github.com/user-attachments/assets/60a3d730-4968-4a2d-abb3-d5bc113c7ea4" />
 
 ## RESULT:
-The program is executed successfully
+The program is executed successfully.
 
 -----------------------------------------------------------------------
 
