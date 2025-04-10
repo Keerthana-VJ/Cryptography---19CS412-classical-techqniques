@@ -547,7 +547,7 @@ In the rail fence cipher, the plaintext is written downwards and diagonally on s
 ## PROGRAM:
 
 ```
-#include <stdio.h>
+ #include <stdio.h>
  #include <string.h>
  int main() {
  int i, j, k, l;
@@ -555,7 +555,7 @@ In the rail fence cipher, the plaintext is written downwards and diagonally on s
  printf("\n\t\tRAIL FENCE TECHNIQUE\n");
  printf("\nEnter the input string: ");
  fgets(a, sizeof(a), stdin);
-a[strcspn(a, "\n")] = '\0';
+ a[strcspn(a, "\n")] = '\0';
  l = strlen(a); 
  for (i = 0, j = 0; i < l; i++) {
  if (i % 2 == 0) {
@@ -581,7 +581,7 @@ a[strcspn(a, "\n")] = '\0';
  j += 2;
  }
  for (i = k, j = 1; i < l; i++) {
-d[j] = c[i];
+ d[j] = c[i];
  j += 2;
  }
  d[l] = '\0'; 
