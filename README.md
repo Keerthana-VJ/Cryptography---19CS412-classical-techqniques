@@ -593,4 +593,4 @@ In the rail fence cipher, the plaintext is written downwards and diagonally on s
 <img width="344" alt="image" src="https://github.com/user-attachments/assets/fd2ab5ee-cae6-43d3-a2cc-c9f19e3e430b" />
 
 ## RESULT:
-The program is executed successfully
+The program is executed successfully.
